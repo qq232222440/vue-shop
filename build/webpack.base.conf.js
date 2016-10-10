@@ -12,38 +12,19 @@ module.exports = {
     publicPath: config.build.assetsPublicPath,
     filename: '[name].js'
   },
-  externals: {
-    'zepto': 'Zepto',
-    'wx': 'jWeixin'
-  },
   resolve: {
     extensions: ['', '.js', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components'),
-      'views': path.resolve(__dirname, '../src/views'),
+      'components': path.resolve(__dirname, '../src/components')
     }
   },
   resolveLoader: {
     fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.vue$/,
-        loader: 'eslint',
-        include: projectRoot,
-        exclude: /node_modules/
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        include: projectRoot,
-        exclude: /node_modules/
-      }
-    ],
     loaders: [
       {
         test: /\.vue$/,
@@ -57,7 +38,11 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'url',
+        query: {
+          limit: 10000,
+          name: utils.assetsPath('mock/[name].[hash:7].[ext]')
+        }
       },
       {
         test: /\.html$/,
@@ -80,9 +65,6 @@ module.exports = {
         }
       }
     ]
-  },
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
   },
   vue: {
     loaders: utils.cssLoaders()

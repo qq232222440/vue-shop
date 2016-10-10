@@ -3,7 +3,9 @@ var express = require('express')
 var webpack = require('webpack')
 var config = require('../config')
 var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = require('./webpack.dev.conf')
+var webpackConfig = process.env.NODE_ENV === 'testing'
+  ? require('./webpack.prod.conf')
+  : require('./webpack.dev.conf')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -52,7 +54,8 @@ app.use(hotMiddleware)
 
 // serve pure static assets
 var staticPath = path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory)
-app.use(staticPath, express.static('./static'))
+//app.use(staticPath, express.static('./static'))
+app.use(staticPath, express.static('./'+ config.build.assetsSubDirectory +''))
 
 module.exports = app.listen(port, function (err) {
   if (err) {
